@@ -1,7 +1,3 @@
-// Ejercicio - 1
-// Autor: Juan Victor Salas Aguilar
-// Colaboro: Marco Aedo
-// Tiempo:
 import java.util.ArrayList;
 public class VideoJuego3 {
     public static void main(String[] args) {
