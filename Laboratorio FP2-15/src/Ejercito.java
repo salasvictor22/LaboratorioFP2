@@ -38,25 +38,34 @@ public class Ejercito {
             System.out.println("Índice de soldado no válido.");
         }
     }
-
-    public void modificarSoldado(int indice, String nombre, int nivelAtaque, int nivelDefensa, int vidaActual,
-                                int velocidad, String actitud, int fila, int columna, int nivelVida) {
+    
+    public void modificarSoldado(int indice, String nombre, int nivelAtaque, int nivelDefensa,
+                                int velocidad, int fila, int columna, int nivelVida) {
         if (indice >= 0 && indice < misSoldados.size()) {
             Soldado soldado = misSoldados.get(indice);
             soldado.setNombre(nombre);
+            soldado.setNivelVida(nivelVida);
             soldado.setNivelAtaque(nivelAtaque);
             soldado.setNivelDefensa(nivelDefensa);
-            soldado.setVidaActual(vidaActual);
-            soldado.setVelocidad(velocidad);
-            soldado.setActitud(actitud);
+            soldado.setVelocidad(velocidad);            
             soldado.setFila(fila);
-            soldado.setColumna(columna);
-            soldado.setNivelVida(nivelVida);
+            soldado.setColumna(columna);           
         } else {
             System.out.println("Índice de soldado no válido.");
         }
     }
-
+    public void crearSoldado(String nombre, int nivelVida, int nivelAtaque, int nivelDefensa,
+            int velocidad, int fila, int columna) {
+    	Soldado soldado = new Soldado();
+        soldado.setNombre(nombre);
+        soldado.setNivelVida(nivelVida);
+        soldado.setNivelAtaque(nivelAtaque);
+        soldado.setNivelDefensa(nivelDefensa);
+        soldado.setVelocidad(velocidad);            
+        soldado.setFila(fila);
+        soldado.setColumna(columna); 
+        agregarSoldado(soldado);   
+    }
     public Soldado getSoldadoConMayorAtaque() {
         Soldado soldadoConMayorAtaque = null;
         int maxAtaque = -1;
@@ -106,5 +115,8 @@ public class Ejercito {
             result += "\n";
         }        
         return result;
+    }
+    public ArrayList<Soldado> getMisSoldados() {
+        return misSoldados;
     }
 }
