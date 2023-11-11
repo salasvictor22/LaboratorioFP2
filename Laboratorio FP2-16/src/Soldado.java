@@ -8,27 +8,21 @@ public class Soldado {
 	private boolean vive;
 	private int fila;
 	private int columna;
-	private int nivelVida;
-	private String territorioBeneficiado;
-	
+	private int nivelVida;	
+	  
 	public void setNombre(String n){
 		nombre = n;
 	}
-	public void setTerritorioBeneficiado(String territorio){
-		territorioBeneficiado = territorio;
-	}
-	public void setNivelAtaque(){
-		int ataque = (int) (Math.random() * 5 + 1 );
+	public void setNivelAtaque(int ataque){		
 		nivelAtaque = ataque;
 	}
-	public void setNivelDefensa(){
-		int defensa = (int) (Math.random() * 5 + 1 );
+	public void setNivelDefensa(int defensa){		
 		nivelDefensa = defensa;
 	}
 	public void setVidaActual(int vidaAc) {
         vidaActual = vidaAc;
     }
-	public void setFila(int f){
+	public void setFila(int f){		
 		fila = f;
 	}
 	public void setColumna(int c){		
@@ -37,9 +31,11 @@ public class Soldado {
 	public void setNivelVida(int vida){		
 		nivelVida = vida;
 	}
-	public void setVelocidad(){
-		int veloci = (int) (Math.random() * 5 + 1 );
+	public void setVelocidad(int veloci){		
 		velocidad = veloci;
+	}
+	public void setActitud(String ac) {
+		actitud = ac;
 	}
 	public String getNombre(){
 		return nombre;
@@ -65,9 +61,6 @@ public class Soldado {
 	public int getVidaActual() {
 		return vidaActual;
 	}
-	public String getTerritorioBeneficiado() {
-        return territorioBeneficiado;
-    }
 	public void atacar() {
         avanzar();
         actitud = "ofensiva";
