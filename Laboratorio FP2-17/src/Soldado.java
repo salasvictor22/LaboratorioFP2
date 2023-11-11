@@ -8,8 +8,8 @@ public class Soldado {
 	private boolean vive;
 	private int fila;
 	private int columna;
-	private int nivelVida;
-	
+	private int nivelVida;	
+	  
 	public void setNombre(String n){
 		nombre = n;
 	}
