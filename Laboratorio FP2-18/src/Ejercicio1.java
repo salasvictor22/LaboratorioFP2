@@ -2,20 +2,140 @@
 // Autor: Juan Victor Salas Aguilar
 // Colaboro: Marco Aedo
 // Tiempo:
+import java.util.*;
 import java.util.ArrayList;
 public class Ejercicio1 {
-    public static void main(String[] args) {
-        ArrayList<Espadachin> espadachines = new ArrayList<>();
-        ArrayList<Arquero> arqueros = new ArrayList<>();
-        ArrayList<Caballero> caballeros = new ArrayList<>();
-        
-        ArrayList<Soldado> ejercito1 = crearEjercito1(espadachines, arqueros, caballeros);
-        ArrayList<Soldado> ejercito2 = crearEjercito2(espadachines, arqueros, caballeros);
+    public static void main(String[] args) {  	
+    	Scanner sc = new Scanner(System.in);
+        boolean jugarDeNuevo = true;
+        while (jugarDeNuevo) {
+        	ArrayList<Espadachin> espadachines = new ArrayList<>();
+        	ArrayList<Arquero> arqueros = new ArrayList<>();
+        	ArrayList<Caballero> caballeros = new ArrayList<>();        
+        	ArrayList<Soldado> ejercito1 = crearEjercito1(espadachines, arqueros, caballeros);
+        	ArrayList<Soldado> ejercito2 = crearEjercito2(espadachines, arqueros, caballeros);
 
-        System.out.println("Ejército 1:");
-        mostrarEjercito(ejercito1);
-        System.out.println("\nEjército 2:");
-        mostrarEjercito(ejercito2);
+        	System.out.println("Ejército 1:");
+        	mostrarEjercito(ejercito1);
+        	System.out.println("\nEl soldado con mayor vida es: ");
+        	Soldado mayorVida = soldadoConMayorVida(ejercito1);
+        	System.out.println("Nombre: " + mayorVida.getNombre());
+        	System.out.println("Vida: " + mayorVida.getNivelVida());
+        	double promedioVida = calcularPromedioDeVida(ejercito1);
+        	System.out.println("\nPromedio de vida de todos los soldados: " + promedioVida);     
+        	int sumaVidas = calcularSumaDeVidas(ejercito1);
+        	System.out.println("\nEl nivel de vida de todo el ejército es: " + sumaVidas);
+        	ordenamientoBurbuja(ejercito1);
+        	System.out.println("\nEjército 2:");
+        	mostrarEjercito(ejercito2);
+        	System.out.println("\nEl soldado con mayor vida es: ");
+        	Soldado mayorV = soldadoConMayorVida(ejercito2);
+        	System.out.println("Nombre: " + mayorV.getNombre());
+        	System.out.println("Vida: " + mayorV.getNivelVida());
+        	double promedioV = calcularPromedioDeVida(ejercito2);
+        	System.out.println("\nPromedio de vida de todos los soldados: " + promedioV);     
+        	int sumaV = calcularSumaDeVidas(ejercito2);
+        	System.out.println("\nEl nivel de vida de todo el ejército es: " + sumaV);
+        	ordenamientoBurbuja(ejercito2);
+        	System.out.println("\n");
+        	Soldado[][] tablero = crearTablero(ejercito1, ejercito2);
+        	imprimirTablero(tablero, ejercito1, ejercito2);
+        	System.out.println("\nBatalla entre el ejrcito1 vs el ejercito2");
+        	batalla(ejercito1, ejercito2);
+        	System.out.println("¿Quieres jugar de nuevo? (si/no): ");
+            String respuesta = sc.next().toLowerCase();
+            if (!respuesta.equals("si")) {
+                System.out.println("Fin del programa. ¡Hasta luego!");
+                jugarDeNuevo = false;
+            } else {              
+                espadachines.clear();
+                arqueros.clear();
+                caballeros.clear();
+                ejercito1 = crearEjercito1(espadachines, arqueros, caballeros);
+                ejercito2 = crearEjercito2(espadachines, arqueros, caballeros);
+            }
+        }
+    }
+    public static void imprimirTablero(Soldado[][] tablero, ArrayList<Soldado> ejercito1, ArrayList<Soldado> ejercito2) {
+    	System.out.print(" ");
+    	for (char columna = 'A'; columna <= 'J'; columna++) {
+    	    System.out.print("   " + columna);
+    	}
+    	System.out.println();
+    	System.out.println("   ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ");
+
+    	for (int i = 0; i < tablero.length; i++) {
+    	    System.out.print((i + 1 < 10 ? " " : "") + (i + 1));
+    	    for (int j = 0; j < tablero[i].length; j++) {
+    	        if (tablero[i][j] != null) {
+    	            Soldado soldado = tablero[i][j];
+    	            char inicialTipo = obtenerInicialTipoSoldado(soldado);
+    	            int numeroEjercito = soldado.getNombre().contains("X1") ? 1 : 2;
+    	            System.out.print("|" + numeroEjercito + inicialTipo + soldado.getNivelVida());
+    	        } else {
+    	            System.out.print("|___");
+    	        }
+    	    }
+    	    System.out.println("|");
+    	}
+    }
+    public static void ordenamientoBurbuja(ArrayList<Soldado> ejercito) {
+    	System.out.println("\nRanking de poder por ordenamiento burbuja:");
+        int n = ejercito.size();
+        boolean ordenado;
+        for (int i = 0; i < n - 1; i++) {
+            ordenado = false;
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (ejercito.get(j).getNivelVida() < ejercito.get(j + 1).getNivelVida()) {
+                    Soldado temp = ejercito.get(j);
+                    ejercito.set(j, ejercito.get(j + 1));
+                    ejercito.set(j + 1, temp);
+                    ordenado = true;
+                }
+            }
+            if (!ordenado) {
+                break;
+            }
+        }
+        for (int i = 0; i < ejercito.size(); i++) {
+            System.out.println("Posición " + (i + 1) + ": " + ejercito.get(i).getNombre() + " - Vida: " + ejercito.get(i).getNivelVida());
+        }
+    }
+    public static double calcularPromedioDeVida(ArrayList<Soldado> ejercito) {
+        int totalVida = 0;
+        for (Soldado soldado : ejercito) {
+            totalVida += soldado.getNivelVida();
+        }
+        return (double) totalVida / ejercito.size();
+    }
+    public static char obtenerInicialTipoSoldado(Soldado soldado) {
+        if (soldado instanceof Espadachin) {
+            return 'E';
+        } else if (soldado instanceof Arquero) {
+            return 'A';
+        } else if (soldado instanceof Caballero) {
+            return 'C';
+        } else {
+            return 'S';
+        }
+    }
+    public static int calcularSumaDeVidas(ArrayList<Soldado> ejercito) {
+        int sumaVidas = 0;
+        for (Soldado soldado : ejercito) {
+            sumaVidas += soldado.getNivelVida();
+        }
+        return sumaVidas;
+    }
+    public static Soldado soldadoConMayorVida(ArrayList<Soldado> ejercito) {
+        Soldado mayorVida = null;
+        int maxVida = 0;
+        for (Soldado soldado : ejercito) {
+            if (soldado.getNivelVida() > maxVida) {
+                maxVida = soldado.getNivelVida();
+                mayorVida = soldado;
+            }
+        }
+        return mayorVida;
     }
     public static ArrayList<Soldado> crearEjercito1(ArrayList<Espadachin> espadachines, ArrayList<Arquero> arqueros, ArrayList<Caballero> caballeros) {
         ArrayList<Soldado> ejercito = new ArrayList<>();
@@ -73,6 +193,23 @@ public class Ejercicio1 {
         }
         return ejercito;
     }
+    private static Soldado[][] crearTablero(ArrayList<Soldado> ejercito1, ArrayList<Soldado> ejercito2) {
+        Soldado[][] tablero = new Soldado[10][10];
+
+        for (Soldado soldado : ejercito1) {
+            int fila = soldado.getFila() - 1;
+            int columna = soldado.getColumna() - 1;
+            tablero[fila][columna] = soldado;
+        }
+
+        for (Soldado soldado : ejercito2) {
+            int fila = soldado.getFila() - 1;
+            int columna = soldado.getColumna() - 1;
+            tablero[fila][columna] = soldado;
+        }
+
+        return tablero;
+    }
     public static ArrayList<Soldado> crearEjercito2(ArrayList<Espadachin> espadachines, ArrayList<Arquero> arqueros, ArrayList<Caballero> caballeros) {
         ArrayList<Soldado> ejercito = new ArrayList<>();
         int numSoldados = (int) (Math.random() * 10) + 1;
@@ -128,6 +265,25 @@ public class Ejercicio1 {
             ejercito.add(soldado);
         }
         return ejercito;
+    }
+    public static void batalla(ArrayList<Soldado> ejercito1, ArrayList<Soldado> ejercito2) {
+        int numSoldadosEjercito1 = ejercito1.size();
+        int numSoldadosEjercito2 = ejercito2.size();
+
+        if (numSoldadosEjercito1 > numSoldadosEjercito2) {
+            System.out.println("¡Ejército 1 ha ganado la batalla!");
+            System.out.println("Número de soldados: " + numSoldadosEjercito1);
+            System.out.println("Ejército 2 ha perdido.");
+            System.out.println("Número de soldados: " + numSoldadosEjercito2);
+        } else if (numSoldadosEjercito2 > numSoldadosEjercito1) {
+            System.out.println("¡Ejército 2 ha ganado la batalla!");
+            System.out.println("Número de soldados: " + numSoldadosEjercito2);
+            System.out.println("Ejército 1 ha perdido.");
+            System.out.println("Número de soldados: " + numSoldadosEjercito1);
+        } else {
+            System.out.println("¡La batalla ha terminado en empate!");
+            System.out.println("Ambos ejércitos tienen el mismo número de soldados: " + numSoldadosEjercito1);
+        }
     }
     public static void mostrarEjercito(ArrayList<Soldado> ejercito) {
         for (Soldado soldado : ejercito) {
