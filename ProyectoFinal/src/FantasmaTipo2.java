@@ -7,7 +7,7 @@ public class FantasmaTipo2 extends Fantasma{
         setColor("rojo");
 	}
 	private void asignarPosicionAleatoria() {
-        setFila((int) (Math.random() * 15));
-        setColumna((int) (Math.random() * 15));
+        setFila((int) (Math.random() * 10));
+        setColumna((int) (Math.random() * 10));
     }
 }
